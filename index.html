@@ -69,19 +69,25 @@
   .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;
     background:linear-gradient(90deg,var(--amber),var(--clay));box-shadow:0 0 10px rgba(201,128,47,.6);}
 
-  /* ---------- sticky nav ---------- */
-  .nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:40;
-    margin:14px 14px 0;display:flex;gap:8px;overflow-x:auto;padding:6px;
-    scrollbar-width:none;}
-  .nav::-webkit-scrollbar{display:none;}
-  .nav a{flex:none;text-decoration:none;color:var(--ink);font-size:13px;font-weight:600;
-    padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.42);
-    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.6);white-space:nowrap;}
-  .nav a:active{background:rgba(255,255,255,.7);}
+  /* ---------- bottom tab bar (iOS liquid glass) ---------- */
+  .tabbar{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:60;
+    transform:translateX(-50%);width:max-content;max-width:calc(100% - 28px);
+    display:flex;gap:2px;padding:6px;border-radius:30px;
+    background:rgba(255,255,255,.42);
+    -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 10px 34px rgba(60,40,20,.22), inset 0 1px 0 rgba(255,255,255,.85);}
+  .tabbar a{flex:1 1 auto;min-width:52px;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:8px 10px 7px;border-radius:22px;text-decoration:none;color:var(--ink-soft);
+    font-size:10px;font-weight:700;transition:background .25s,color .25s;}
+  .tabbar a svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s;}
+  .tabbar a.active{color:var(--amber);background:rgba(255,255,255,.6);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),0 4px 12px rgba(201,128,47,.18);}
+  .tabbar a.active svg{transform:translateY(-1px) scale(1.06);}
+  .tabbar a:active{background:rgba(255,255,255,.75);}
 
   /* ---------- layout ---------- */
-  .wrap{padding:8px 16px calc(40px + env(safe-area-inset-bottom,0px));
+  .wrap{padding:8px 16px calc(120px + env(safe-area-inset-bottom,0px));
     max-width:1080px;margin:0 auto;}
 
   /* ---------- header ---------- */
@@ -99,7 +105,7 @@
   .seal small{display:block;font-size:8px;letter-spacing:.22em;margin-top:4px;font-family:var(--font);}
 
   /* ---------- sections ---------- */
-  section{margin-top:30px;}
+  section{margin-top:30px;scroll-margin-top:14px;}
   .sec{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
   .sec .no{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
     font-weight:800;font-size:15px;color:#fff;background:var(--ink);
@@ -215,9 +221,7 @@
   footer{margin-top:34px;padding:20px 22px;font-size:12px;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;}
   footer .mark{font-family:var(--serif);color:var(--amber);font-weight:800;font-size:14px;}
 
-  /* ---------- reveal ---------- */
-  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1);}
-  .reveal.in{opacity:1;transform:none;}
+  /* (per-card entrance removed — cards render immediately) */
 
   /* ---------- tablet / desktop ---------- */
   @media (min-width:700px){
@@ -249,12 +253,12 @@
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
   <div class="progress" id="prog"></div>
 
-  <nav class="nav">
-    <a href="#ways">Two Ways</a>
-    <a href="#steeped">Steeped</a>
-    <a href="#whisked">Whisked</a>
-    <a href="#rituals">Rituals</a>
-    <a href="#kit">Kit</a>
+  <nav class="tabbar" aria-label="Sections">
+    <a href="#ways" data-tab="ways" class="active"><svg viewBox="0 0 24 24"><path d="M12 4v6"/><path d="M12 10 6 19"/><path d="M12 10 18 19"/></svg><span>Ways</span></a>
+    <a href="#steeped" data-tab="steeped"><svg viewBox="0 0 24 24"><path d="M5 19C5 11 12 5 19 5c0 8-7 14-14 14Z"/><path d="M8 16c3-3 6-6 9-9"/></svg><span>Steeped</span></a>
+    <a href="#whisked" data-tab="whisked"><svg viewBox="0 0 24 24"><path d="M4 12a8 6 0 0 0 16 0Z"/><path d="M9 12V5"/><path d="M12 12V4"/><path d="M15 12V5"/></svg><span>Whisked</span></a>
+    <a href="#rituals" data-tab="rituals"><svg viewBox="0 0 24 24"><path d="M4 20h4v-4h4v-4h4V8h4"/></svg><span>Rituals</span></a>
+    <a href="#kit" data-tab="kit"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg><span>Kit</span></a>
   </nav>
 
   <div class="wrap">
@@ -542,11 +546,24 @@
   };
   document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-  // reveal on scroll
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }, {threshold:.08, rootMargin:'0px 0px -6% 0px'});
-  document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (Math.min(i,6)*40)+'ms'; io.observe(el); });
+  // bottom tab bar — highlight the section in view (iOS-style)
+  const tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar a'));
+  const secs = tabs.map(t => document.getElementById(t.getAttribute('data-tab'))).filter(Boolean);
+  const setActive = (id) => tabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === id));
+  const spy = () => {
+    const line = window.innerHeight * 0.42;
+    let current = secs.length ? secs[0].id : null;
+    for (const s of secs) if (s.getBoundingClientRect().top <= line) current = s.id;
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4 && secs.length) current = secs[secs.length - 1].id;
+    if (current) setActive(current);
+  };
+  document.addEventListener('scroll', spy, {passive:true}); spy();
+  tabs.forEach(t => t.addEventListener('click', (e) => {
+    e.preventDefault();
+    const el = document.getElementById(t.getAttribute('data-tab'));
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    setActive(t.getAttribute('data-tab'));
+  }));
 </script>
 </body>
 </html>
