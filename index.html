@@ -2,346 +2,551 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gongfu Cha · The Art of Multiple Infusions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#f0e4d3" />
+<title>Gongfu Cha · Steep the Leaves, Whisk the Powders</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3C%3Fxml%20version%3D%271.0%27%20encoding%3D%27utf-8%27%3F%3E%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23c2683a%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23e7b356%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2715%27%20fill%3D%27url%28%2523g%29%27%2F%3E%3Cpath%20d%3D%27M32%2011C45%2019%2045%2041%2032%2053C19%2041%2019%2019%2032%2011Z%27%20fill%3D%27%23fff%27%2F%3E%3Cpath%20d%3D%27M32%2015V49%27%20stroke%3D%27%23c2683a%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E"/>
 <style>
   :root{
-    --paper:#f6efe3;
-    --paper-2:#efe4d0;
-    --ink:#3a2c1f;
-    --ink-soft:#6b5641;
-    --line:#d8c6a6;
-    --amber:#b9752c;
-    --amber-deep:#8a4f1c;
-    --jade:#5c7d5a;
-    --clay:#b0603a;
-    --plum:#7d4a5f;
-    --shadow:0 10px 30px rgba(58,44,31,.12);
-    --radius:16px;
-    --font:"Avenir Next","Helvetica Neue",ui-sans-serif,system-ui,sans-serif;
+    --ink:#2a211c;
+    --ink-soft:#6a5f54;
+    --amber:#c9802f;
+    --jade:#3f9d6a;
+    --plum:#a15a86;
+    --clay:#c2683a;
+    --glass:rgba(255,255,255,.55);
+    --glass-hi:rgba(255,255,255,.82);
+    --glass-line:rgba(255,255,255,.62);
+    --glass-fill:linear-gradient(160deg,rgba(255,255,255,.66),rgba(255,255,255,.30));
+    --radius:24px;
+    --font:"SF Pro Display","-apple-system","Segoe UI",ui-sans-serif,system-ui,sans-serif;
     --serif:"Iowan Old Style","Palatino Linotype",Georgia,serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
   body{
-    background:var(--paper);
-    color:var(--ink);
     font-family:var(--font);
+    color:var(--ink);
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
-    padding:28px;
+    min-height:100dvh;
+    overflow-x:hidden;
+    background:#efe1cf;
   }
-  .sheet{
-    max-width:1080px;
-    margin:0 auto;
+
+  /* ---------- liquid glass background mesh ---------- */
+  .mesh{position:fixed;inset:0;z-index:-2;
     background:
-      radial-gradient(1200px 500px at 50% -8%, rgba(185,117,44,.10), transparent 60%),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
-    border:1px solid var(--line);
-    border-radius:24px;
-    box-shadow:var(--shadow);
-    padding:34px clamp(20px,4vw,52px) 40px;
+      radial-gradient(60vmax 60vmax at 12% 6%, rgba(201,128,47,.55), transparent 60%),
+      radial-gradient(55vmax 55vmax at 92% 22%, rgba(63,157,106,.5), transparent 60%),
+      radial-gradient(60vmax 60vmax at 85% 88%, rgba(161,90,134,.45), transparent 62%),
+      radial-gradient(50vmax 50vmax at 6% 80%, rgba(194,104,58,.42), transparent 60%),
+      linear-gradient(165deg,#f4ead9 0%,#e9dcc7 100%);
   }
+  .mesh::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(120vmax 80vmax at 50% 40%, rgba(255,255,255,.35), transparent 60%);
+    filter:blur(4px);
+  }
+  .blob{position:fixed;z-index:-1;border-radius:50%;filter:blur(48px);opacity:.5;pointer-events:none;}
+  .blob.b1{width:46vmax;height:46vmax;left:-10vmax;top:-8vmax;background:radial-gradient(circle,rgba(255,190,120,.7),transparent 70%);animation:drift1 26s ease-in-out infinite;}
+  .blob.b2{width:40vmax;height:40vmax;right:-8vmax;top:30%;background:radial-gradient(circle,rgba(120,210,160,.6),transparent 70%);animation:drift2 32s ease-in-out infinite;}
+  .blob.b3{width:42vmax;height:42vmax;left:20%;bottom:-14vmax;background:radial-gradient(circle,rgba(200,140,180,.55),transparent 70%);animation:drift3 30s ease-in-out infinite;}
+  @keyframes drift1{50%{transform:translate(6vmax,8vmax) scale(1.1);}}
+  @keyframes drift2{50%{transform:translate(-7vmax,5vmax) scale(1.08);}}
+  @keyframes drift3{50%{transform:translate(5vmax,-6vmax) scale(1.12);}}
+
+  /* ---------- glass surface ---------- */
+  .glass{
+    background:var(--glass-fill);
+    -webkit-backdrop-filter:blur(22px) saturate(170%);
+    backdrop-filter:blur(22px) saturate(170%);
+    border:1px solid var(--glass-line);
+    border-radius:var(--radius);
+    box-shadow:0 10px 34px rgba(70,45,20,.12), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+
+  /* ---------- scroll progress ---------- */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;
+    background:linear-gradient(90deg,var(--amber),var(--clay));box-shadow:0 0 10px rgba(201,128,47,.6);}
+
+  /* ---------- sticky nav ---------- */
+  .nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:40;
+    margin:14px 14px 0;display:flex;gap:8px;overflow-x:auto;padding:6px;
+    scrollbar-width:none;}
+  .nav::-webkit-scrollbar{display:none;}
+  .nav a{flex:none;text-decoration:none;color:var(--ink);font-size:13px;font-weight:600;
+    padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.42);
+    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.6);white-space:nowrap;}
+  .nav a:active{background:rgba(255,255,255,.7);}
+
+  /* ---------- layout ---------- */
+  .wrap{padding:8px 16px calc(40px + env(safe-area-inset-bottom,0px));
+    max-width:1080px;margin:0 auto;}
 
   /* ---------- header ---------- */
-  .head{
-    display:flex;align-items:flex-end;justify-content:space-between;
-    gap:24px;flex-wrap:wrap;
-    border-bottom:2px solid var(--ink);
-    padding-bottom:20px;margin-bottom:26px;
-  }
-  .kicker{
-    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
-    color:var(--amber-deep);font-weight:700;margin-bottom:10px;
-  }
-  h1{
-    font-family:var(--serif);
-    font-size:clamp(34px,6vw,60px);
-    line-height:1.02;letter-spacing:-.01em;font-weight:700;
-  }
-  h1 .zh{color:var(--amber);font-weight:700;}
-  .sub{
-    margin-top:12px;max-width:46ch;color:var(--ink-soft);font-size:15px;
-  }
-  .seal{
-    flex:none;width:96px;height:96px;border-radius:14px;
-    background:var(--clay);color:#fff;display:grid;place-items:center;
-    font-family:var(--serif);font-size:34px;letter-spacing:.05em;
-    box-shadow:var(--shadow);transform:rotate(-3deg);
-    line-height:1;text-align:center;font-weight:700;
-  }
-  .seal small{display:block;font-size:9px;letter-spacing:.2em;margin-top:6px;font-family:var(--font);opacity:.85;}
+  .head{padding:26px 22px 24px;margin:14px 0 8px;position:relative;overflow:hidden;}
+  .head::before{content:"";position:absolute;top:-40%;right:-20%;width:120%;height:120%;
+    background:radial-gradient(circle,rgba(255,255,255,.5),transparent 60%);pointer-events:none;}
+  .kicker{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);font-weight:800;margin-bottom:12px;position:relative;}
+  h1{font-size:clamp(30px,8.5vw,54px);line-height:1.05;letter-spacing:-.02em;font-weight:800;position:relative;}
+  h1 .zh{color:var(--amber);}
+  .sub{margin-top:14px;font-size:15px;color:var(--ink-soft);max-width:46ch;position:relative;}
+  .seal{position:absolute;top:20px;right:20px;width:74px;height:74px;border-radius:18px;
+    background:linear-gradient(150deg,rgba(194,104,58,.9),rgba(154,74,36,.9));color:#fff;
+    display:grid;place-items:center;font-family:var(--serif);font-size:26px;font-weight:700;
+    box-shadow:0 8px 22px rgba(154,74,36,.4), inset 0 1px 0 rgba(255,255,255,.5);transform:rotate(-4deg);}
+  .seal small{display:block;font-size:8px;letter-spacing:.22em;margin-top:4px;font-family:var(--font);}
 
-  /* ---------- section heads ---------- */
-  .sec{margin:30px 0 14px;display:flex;align-items:center;gap:12px;}
-  .sec .no{
-    flex:none;width:30px;height:30px;border-radius:8px;background:var(--ink);
-    color:var(--paper);display:grid;place-items:center;font-weight:800;font-size:14px;
-  }
-  .sec h2{font-family:var(--serif);font-size:24px;letter-spacing:-.01em;}
-  .sec .tag{margin-left:auto;font-size:12px;color:var(--ink-soft);letter-spacing:.05em;}
+  /* ---------- sections ---------- */
+  section{margin-top:30px;}
+  .sec{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .sec .no{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+    font-weight:800;font-size:15px;color:#fff;background:var(--ink);
+    box-shadow:0 6px 16px rgba(0,0,0,.15);}
+  .sec.jade .no{background:linear-gradient(150deg,#4fb57c,#2f8a58);}
+  .sec.plum .no{background:linear-gradient(150deg,#bd74a3,#8f4a75);}
+  .sec h2{font-family:var(--serif);font-size:24px;letter-spacing:-.01em;font-weight:800;}
+  .sec .tag{margin-left:auto;font-size:11.5px;color:var(--ink-soft);}
 
-  /* ---------- principles ---------- */
-  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-  .card{
-    background:rgba(255,255,255,.55);
-    border:1px solid var(--line);border-radius:var(--radius);
-    padding:16px 15px 18px;position:relative;overflow:hidden;
-  }
-  .card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--amber);}
-  .card .ico{font-size:24px;margin-bottom:8px;display:block;}
-  .card h3{font-size:15px;font-weight:800;margin-bottom:5px;letter-spacing:-.01em;}
+  /* ---------- two ways ---------- */
+  .grid{display:grid;gap:14px;}
+  .g2{grid-template-columns:1fr;}
+  .way{padding:20px;position:relative;overflow:hidden;}
+  .way .ico{font-size:34px;display:block;margin-bottom:10px;}
+  .way h3{font-family:var(--serif);font-size:21px;margin-bottom:2px;}
+  .way .zh{font-size:12px;color:var(--ink-soft);font-family:var(--serif);}
+  .way p{font-size:13.5px;margin-top:11px;}
+  .way .teas{margin-top:14px;font-size:12px;font-weight:800;letter-spacing:.01em;padding-top:12px;border-top:1px solid rgba(0,0,0,.07);}
+  .way.steep .teas{color:var(--jade);}
+  .way.whisk .teas{color:var(--plum);}
+  .way.steep::after,.way.whisk::after{content:"";position:absolute;top:-30%;right:-30%;width:70%;height:120%;border-radius:50%;filter:blur(20px);opacity:.4;pointer-events:none;}
+  .way.steep::after{background:radial-gradient(circle,rgba(63,157,106,.7),transparent 70%);}
+  .way.whisk::after{background:radial-gradient(circle,rgba(161,90,134,.7),transparent 70%);}
+
+  /* ---------- pillars ---------- */
+  .pillars{grid-template-columns:repeat(2,1fr);}
+  .card{padding:18px 16px 20px;position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--jade),transparent);}
+  .card .ico{font-size:26px;display:block;margin-bottom:10px;}
+  .card h3{font-size:15px;font-weight:800;margin-bottom:6px;}
   .card p{font-size:12.5px;color:var(--ink-soft);}
 
-  /* ---------- table ---------- */
-  .table-wrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:rgba(255,255,255,.45);box-shadow:var(--shadow);}
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  thead th{
-    background:var(--ink);color:var(--paper);text-align:left;
-    font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
-    padding:12px 14px;position:sticky;top:0;
-  }
-  thead th.c,td.c{text-align:center;}
-  tbody tr{border-top:1px solid var(--line);}
-  tbody tr:hover{background:rgba(185,117,44,.07);}
-  td{padding:12px 14px;vertical-align:middle;}
-  .tea{display:flex;align-items:center;gap:11px;font-weight:700;}
-  .chip{flex:none;width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);}
-  .tea .zh{font-family:var(--serif);color:var(--ink-soft);font-weight:600;font-size:12px;display:block;}
-  .temp{font-weight:700;font-variant-numeric:tabular-nums;}
-  .temp .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;}
-  .bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;min-width:70px;}
-  .bar i{display:block;height:100%;border-radius:4px;}
-  .inf{font-variant-numeric:tabular-nums;font-weight:600;}
-  .note{font-size:11px;color:var(--ink-soft);}
-  .col-dose,.col-time,.col-inf{white-space:nowrap;}
+  /* ---------- tea cards ---------- */
+  .teas-grid{grid-template-columns:1fr;}
+  .tea{padding:18px 18px 20px;position:relative;overflow:hidden;
+    transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s;}
+  .tea:active{transform:scale(.985);}
+  .tea .top{display:flex;align-items:center;gap:12px;}
+  .chip{flex:none;width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.6),0 2px 6px rgba(0,0,0,.15);}
+  .tea .name{font-size:17px;font-weight:800;line-height:1.2;}
+  .tea .zh{font-family:var(--serif);font-size:12.5px;color:var(--ink-soft);font-weight:600;margin-top:2px;}
+  .temp{display:flex;align-items:center;gap:9px;margin:15px 0 4px;font-size:24px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;}
+  .temp .dot{width:12px;height:12px;border-radius:50%;box-shadow:0 0 0 4px rgba(255,255,255,.4);}
+  .temp small{font-size:11px;font-weight:600;color:var(--ink-soft);margin-left:auto;}
+  .statgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:14px;border-radius:14px;overflow:hidden;background:rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.05);}
+  .stat{background:rgba(255,255,255,.5);padding:10px 12px;}
+  .stat .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
+  .stat .v{font-size:14px;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums;}
+  .tea .vessel{margin-top:12px;font-size:12px;color:var(--ink-soft);}
+  .tea .vessel b{color:var(--ink);}
+  .tea .note{margin-top:9px;font-size:12px;color:var(--ink-soft);}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle;margin-left:6px;color:#fff;background:var(--amber);box-shadow:0 3px 9px rgba(201,128,47,.45);}
+  .badge.soft{background:var(--ink);}
 
-  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-soft);}
-  .legend b{color:var(--ink);}
+  /* spotlight card */
+  .tea.spot{background:linear-gradient(160deg,rgba(255,232,200,.78),rgba(255,220,170,.4));
+    border:1px solid rgba(201,128,47,.5);
+    box-shadow:0 12px 36px rgba(201,128,47,.24), inset 0 1px 0 rgba(255,255,255,.95);}
+  .tea.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+    background:conic-gradient(from var(--a,0deg),transparent 0 60%,rgba(255,255,255,.9) 75%,transparent 90%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;pointer-events:none;}
+  @keyframes spin{to{--a:360deg;}}
+  @property --a{syntax:'<angle>';initial-value:0deg;inherits:false;}
+  .spotlight{padding:20px;margin-top:2px;position:relative;overflow:hidden;}
+  .spotlight::after{content:"🍵";position:absolute;right:-14px;bottom:-24px;font-size:130px;opacity:.12;pointer-events:none;}
+  .spotlight .kicker{color:var(--amber);margin-bottom:8px;}
+  .spotlight h3{font-family:var(--serif);font-size:23px;}
+  .spotlight h3 .zh{color:var(--amber);font-size:16px;}
+  .spotlight p{font-size:13.5px;margin-top:10px;}
+  .stats{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:12.5px;}
+  .stats span{display:flex;flex-direction:column;gap:2px;}
+  .stats b{font-size:15px;color:var(--amber);font-weight:800;font-variant-numeric:tabular-nums;}
+  .stats small{color:var(--ink-soft);font-size:11px;}
 
-  /* ---------- steps ---------- */
-  .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
-  .step{
-    background:rgba(255,255,255,.5);border:1px solid var(--line);
-    border-radius:14px;padding:14px 12px 16px;position:relative;
-  }
-  .step .n{
-    width:26px;height:26px;border-radius:50%;background:var(--amber);color:#fff;
-    display:grid;place-items:center;font-weight:800;font-size:13px;margin-bottom:9px;
-    box-shadow:0 4px 10px rgba(185,117,44,.35);
-  }
-  .step h4{font-size:13.5px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em;}
-  .step p{font-size:11.5px;color:var(--ink-soft);}
-  .step .zh{color:var(--amber-deep);font-family:var(--serif);font-size:11px;}
+  /* whisked cards */
+  .tea.whisk{--acc:var(--plum);}
+  .tea.whisk::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--plum),transparent);}
+  .whisknote{padding:14px 16px;font-size:12.5px;margin-top:14px;display:flex;gap:10px;align-items:flex-start;
+    background:linear-gradient(160deg,rgba(233,214,228,.6),rgba(255,255,255,.3));
+    border:1px solid rgba(161,90,134,.35);}
+  .whisknote .e{font-size:20px;flex:none;}
 
-  /* ---------- equipment ---------- */
-  .equip{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;}
-  .eq{
-    background:rgba(255,255,255,.5);border:1px solid var(--line);
-    border-radius:12px;padding:12px 8px;text-align:center;font-size:11.5px;font-weight:600;
-  }
-  .eq .ico{font-size:22px;display:block;margin-bottom:6px;}
-  .eq small{display:block;color:var(--ink-soft);font-weight:500;font-size:10px;margin-top:3px;}
+  /* ---------- rituals ---------- */
+  .rituals{grid-template-columns:repeat(2,1fr);}
+  .step{padding:16px 15px 18px;}
+  .step .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;margin-bottom:11px;
+    background:linear-gradient(150deg,#4fb57c,#2f8a58);box-shadow:0 5px 13px rgba(47,138,88,.4);}
+  .step.whisk .n{background:linear-gradient(150deg,#bd74a3,#8f4a75);box-shadow:0 5px 13px rgba(143,74,117,.4);}
+  .step h4{font-size:14.5px;font-weight:800;margin-bottom:5px;}
+  .step .zh{color:var(--amber);font-family:var(--serif);font-size:11.5px;font-weight:600;}
+  .step.whisk .zh{color:var(--plum);}
+  .step p{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+
+  /* ---------- kit ---------- */
+  .kit-group{margin-bottom:16px;}
+  .kit-l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ink-soft);margin-bottom:10px;}
+  .kit{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .kit.w2{grid-template-columns:repeat(2,1fr);}
+  .eq{padding:13px 6px 15px;text-align:center;font-size:11.5px;font-weight:700;}
+  .eq .ico{font-size:24px;display:block;margin-bottom:7px;}
+  .eq small{display:block;color:var(--ink-soft);font-weight:500;font-size:10px;margin-top:3px;line-height:1.25;}
+  .eq.jade::before{content:"";position:absolute;top:0;left:18%;right:18%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--jade),transparent);}
+  .eq.plum::before{content:"";position:absolute;top:0;left:18%;right:18%;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--plum),transparent);}
 
   /* ---------- tips ---------- */
-  .tips{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-  .tip{
-    background:linear-gradient(180deg,rgba(92,125,90,.10),rgba(92,125,90,.02));
-    border:1px solid rgba(92,125,90,.35);border-left:4px solid var(--jade);
-    border-radius:12px;padding:12px 14px;font-size:12.5px;
-  }
+  .tips{grid-template-columns:1fr;}
+  .tip{padding:16px 18px;font-size:13px;position:relative;overflow:hidden;}
   .tip b{color:var(--jade);font-weight:800;}
+  .tip.whisk{background:linear-gradient(160deg,rgba(233,214,228,.55),rgba(255,255,255,.28));border-color:rgba(161,90,134,.3);}
+  .tip.whisk b{color:var(--plum);}
 
-  footer{
-    margin-top:30px;border-top:1px solid var(--line);padding-top:16px;
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-    font-size:11.5px;color:var(--ink-soft);
-  }
-  footer .mark{font-family:var(--serif);color:var(--amber-deep);font-weight:700;}
+  footer{margin-top:34px;padding:20px 22px;font-size:12px;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;}
+  footer .mark{font-family:var(--serif);color:var(--amber);font-weight:800;font-size:14px;}
 
-  @media (max-width:820px){
-    .grid4{grid-template-columns:repeat(2,1fr);}
-    .steps{grid-template-columns:repeat(3,1fr);}
-    .equip{grid-template-columns:repeat(4,1fr);}
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- tablet / desktop ---------- */
+  @media (min-width:700px){
+    .g2{grid-template-columns:1fr 1fr;}
+    .pillars{grid-template-columns:repeat(4,1fr);}
+    .teas-grid{grid-template-columns:1fr 1fr;}
+    .rituals.s6{grid-template-columns:repeat(3,1fr);}
+    .rituals.s3{grid-template-columns:repeat(3,1fr);}
+    .tips{grid-template-columns:1fr 1fr;}
   }
-  @media (max-width:560px){
-    body{padding:14px;}
-    .seal{display:none;}
-    .steps{grid-template-columns:repeat(2,1fr);}
-    .tips{grid-template-columns:1fr;}
-    .table-wrap{overflow-x:auto;}
-    table{min-width:640px;}
+  @media (min-width:980px){
+    .wrap{padding:8px 24px 60px;}
+    .teas-grid{grid-template-columns:repeat(3,1fr);}
+    .rituals.s6{grid-template-columns:repeat(6,1fr);}
+    .kit{grid-template-columns:repeat(8,1fr);}
+    .kit.w2{grid-template-columns:repeat(4,1fr);}
+    footer{flex-direction:row;justify-content:space-between;align-items:center;}
   }
-  @media print{
-    body{background:#fff;padding:0;}
-    .sheet{border:none;box-shadow:none;border-radius:0;}
-    thead th{position:static;}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
   }
 </style>
 </head>
 <body>
-<div class="sheet">
+  <div class="mesh"></div>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="progress" id="prog"></div>
 
-  <!-- HEADER -->
-  <header class="head">
-    <div>
-      <div class="kicker">Tea · 茶艺 · Small Vessel · Many Steeps</div>
-      <h1>Gongfu <span class="zh">Cha</span><br>The Art of Many Infusions</h1>
-      <p class="sub">One tea, poured again and again — a little leaf, a small cup, long steeps. The same ritual, tuned differently for every family of tea.</p>
-    </div>
-    <div class="seal">功夫茶<small>GONGFU</small></div>
-  </header>
+  <nav class="nav">
+    <a href="#ways">Two Ways</a>
+    <a href="#steeped">Steeped</a>
+    <a href="#whisked">Whisked</a>
+    <a href="#rituals">Rituals</a>
+    <a href="#kit">Kit</a>
+  </nav>
 
-  <!-- 1 · CORE PRINCIPLES -->
-  <div class="sec"><span class="no">1</span><h2>The Four Pillars</h2><span class="tag">what makes it gongfu</span></div>
-  <div class="grid4">
-    <div class="card"><span class="ico">🍃</span><h3>High Dosage</h3><p>5–8 g per small gaiwan (≈110 ml). Lots of leaf, little water = depth in every cup.</p></div>
-    <div class="card"><span class="ico">⏱️</span><h3>Short &amp; Repeated</h3><p>Seconds, not minutes. Re-steep the same leaves 6–20 times, lengthening each steep.</p></div>
-    <div class="card"><span class="ico">🫖</span><h3>Wake the Leaves</h3><p>A quick rinse (洗茶) opens the leaf and warms the vessel — essential for pu-erh &amp; aged teas.</p></div>
-    <div class="card"><span class="ico">⚖️</span><h3>Pour Evenly</h3><p>Always through a fair cup (公道杯) so each sip has the same strength, cup to cup.</p></div>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="head glass reveal">
+      <div class="seal">功夫茶<small>GONGFU</small></div>
+      <div class="kicker">Tea · 茶艺 · Two Methods, One Table</div>
+      <h1>Steep the Leaves,<br><span class="zh">Whisk the Powders</span></h1>
+      <p class="sub">Most teas are <b>steeped</b> — leaf in, water on, pour out, repeat. But matcha and hojicha <em>powders</em> don't steep at all: they're <b>whisked</b> into the bowl. Same table, two different crafts.</p>
+    </header>
+
+    <!-- 1 · TWO WAYS -->
+    <section id="ways">
+      <div class="sec reveal"><span class="no">1</span><h2>Two Ways to Make Tea</h2><span class="tag">don't mix the methods</span></div>
+      <div class="grid g2">
+        <div class="way steep glass reveal">
+          <span class="ico">🍃</span>
+          <h3>Steeped <span class="zh">冲泡</span></h3>
+          <div class="zh">gongfu leaves · 功夫</div>
+          <p>Loose or broken leaf into a small vessel, hot water on, a few seconds, pour it all out. Then re-steep the <em>same</em> leaf — six to twenty times, a little longer each round.</p>
+          <div class="teas">Green · White · Yellow · Oolong · Pu-erh · Black · Loose-leaf Hojicha</div>
+        </div>
+        <div class="way whisk glass reveal">
+          <span class="ico">🥣</span>
+          <h3>Whisked <span class="zh">点茶</span></h3>
+          <div class="zh">powders · 茶粉</div>
+          <p>Tea is ground to a powder, sifted into a bowl, hot water added, then whisked with a bamboo <em>chasen</em> until frothy. The whole powder is in your bowl — no leaf to re-steep. One prep, one bowl.</p>
+          <div class="teas">Matcha · Hojicha powder</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · PILLARS -->
+    <section id="pillars">
+      <div class="sec jade reveal"><span class="no">2</span><h2>The Steeping Pillars</h2><span class="tag">what makes it gongfu</span></div>
+      <div class="grid pillars">
+        <div class="card glass reveal"><span class="ico">🍃</span><h3>High Dosage</h3><p>5–8 g per small gaiwan (≈110 ml). Lots of leaf, little water = depth in every cup.</p></div>
+        <div class="card glass reveal"><span class="ico">⏱️</span><h3>Short &amp; Repeated</h3><p>Seconds, not minutes. Re-steep the same leaves 6–20 times, lengthening each steep.</p></div>
+        <div class="card glass reveal"><span class="ico">🫖</span><h3>Wake the Leaves</h3><p>A quick rinse (洗茶) opens the leaf and warms the vessel — essential for pu-erh &amp; aged teas.</p></div>
+        <div class="card glass reveal"><span class="ico">⚖️</span><h3>Pour Evenly</h3><p>Always through a fair cup (公道杯) so each sip has the same strength, cup to cup.</p></div>
+      </div>
+    </section>
+
+    <!-- 3 · STEEPED -->
+    <section id="steeped">
+      <div class="sec jade reveal"><span class="no">3</span><h2>Steeped · the Gongfu Leaves</h2><span class="tag">110 ml gaiwan</span></div>
+
+      <div class="spotlight glass reveal">
+        <div class="kicker">★ Spotlight · Tieguanyin 铁观音</div>
+        <h3>The classic light oolong <span class="zh">iron goddess</span></h3>
+        <p>Deeply rolled, floral and honeyed, with that signature 观音韵 aftertaste. The poster child for gongfu: short, hot, repeated steeps that keep opening new layers for well over a dozen cups.</p>
+        <div class="stats">
+          <span><b>95–100°C</b><small>water</small></span>
+          <span><b>7–8 g</b><small>per gaiwan</small></span>
+          <span><b>5–10 s</b><small>first steep</small></span>
+          <span><b>8–12+</b><small>cups</small></span>
+          <span><b>rinse</b><small>to open the curl</small></span>
+        </div>
+      </div>
+
+      <div class="grid teas-grid" style="margin-top:14px">
+        <div class="tea spot glass reveal">
+          <div class="top"><span class="chip" style="background:#7fae5a"></span><div><div class="name">Tieguanyin <span class="badge">Spotlight</span></div><div class="zh">铁观音 · light oolong</div></div></div>
+          <div class="temp"><span class="dot" style="background:#8fbf5f"></span>95–100°C<small>needs heat</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">7–8 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">5–10 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+3–5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">8–12</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Yixing clay / gaiwan</b></div>
+          <div class="note">Floral, iron-roasted. Rinse once to open the curl, then re-steep as long as it tastes.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#8fbf5f"></span><div><div class="name">Green</div><div class="zh">绿茶 · unroasted</div></div></div>
+          <div class="temp"><span class="dot" style="background:#9fd06b"></span>75–85°C<small>keep it gentle</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">5–6 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">10–15 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">4–6</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Gaiwan, lid off</b></div>
+          <div class="note">Delicate — cooler water avoids scorching and bitterness.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#d9c48a"></span><div><div class="name">White</div><div class="zh">白茶 · silver → aged</div></div></div>
+          <div class="temp"><span class="dot" style="background:#e0c98a"></span>85–95°C<small>hotter if aged</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">4–6 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">15–20 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">6–10</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Gaiwan or glass</b></div>
+          <div class="note">Silvery needle is delicate; aged shou mei wants the heat.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#e0b541"></span><div><div class="name">Yellow</div><div class="zh">黄茶 · mellow</div></div></div>
+          <div class="temp"><span class="dot" style="background:#e6c357"></span>80–85°C<small>soft &amp; honeyed</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">5 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">15–20 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">4–6</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Gaiwan</b></div>
+          <div class="note">Rarest of the families — like green, but smoother.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#b06a34"></span><div><div class="name">Dark Oolong</div><div class="zh">浓香 / 炭焙 · Dan Cong</div></div></div>
+          <div class="temp"><span class="dot" style="background:#c9772f"></span>95–100°C<small>bold &amp; roasty</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">7–8 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">5–10 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+3–5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">10–15</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Yixing clay teapot</b></div>
+          <div class="note">Charcoal-roasted, full-bodied, long re-steepable life.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#6f4326"></span><div><div class="name">Ripe Pu-erh</div><div class="zh">熟普 · earthy, smooth</div></div></div>
+          <div class="temp"><span class="dot" style="background:#8a4f2a"></span>100°C<small>full boil</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">7 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">5 s (rinse)</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">10–20</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Yixing, rinse 1–2×</b></div>
+          <div class="note">Fermented, mellow, almost chocolatey. Rinse away the dust.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#9c6b3b"></span><div><div class="name">Raw Pu-erh</div><div class="zh">生普 · aged, sharp</div></div></div>
+          <div class="temp"><span class="dot" style="background:#b9752c"></span>100°C<small>full boil</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">7 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">5–10 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">10–20</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Yixing, rinse once</b></div>
+          <div class="note">Young = green &amp; sharp; aged = mellow &amp; complex.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#a23a2e"></span><div><div class="name">Black / Red</div><div class="zh">红茶 · Yunnan, Keemun</div></div></div>
+          <div class="temp"><span class="dot" style="background:#b9503f"></span>90–95°C<small>sweet &amp; malty</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">5–6 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">15–20 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">5–8</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Gaiwan or small pot</b></div>
+          <div class="note">Fully oxidised — the most forgiving of the steeped teas.</div>
+        </div>
+
+        <div class="tea glass reveal">
+          <div class="top"><span class="chip" style="background:#8a5a34"></span><div><div class="name">Loose-leaf Hojicha <span class="badge soft">leaf</span></div><div class="zh">焙茶 · roasted green</div></div></div>
+          <div class="temp"><span class="dot" style="background:#a9713d"></span>85–90°C<small>roasty, low bitter</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Dose</div><div class="v">5 g</div></div>
+            <div class="stat"><div class="k">1st steep</div><div class="v">15 s</div></div>
+            <div class="stat"><div class="k">Then</div><div class="v">+5 s</div></div>
+            <div class="stat"><div class="k">Cups</div><div class="v">5–8</div></div>
+          </div>
+          <div class="vessel">Vessel · <b>Gaiwan</b></div>
+          <div class="note">This is the <em>leaf</em> form — it steeps. The powder is whisked below.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · WHISKED -->
+    <section id="whisked">
+      <div class="sec plum reveal"><span class="no">4</span><h2>Whisked · the Powders</h2><span class="tag">sift → pour → whisk</span></div>
+      <div class="grid g2">
+        <div class="tea whisk glass reveal">
+          <div class="top"><span class="chip" style="background:#5fae6a"></span><div><div class="name">Matcha</div><div class="zh">抹茶 · stone-ground green</div></div></div>
+          <div class="temp"><span class="dot" style="background:#6fc07a"></span>70–80°C<small>hotter = bitter</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Water</div><div class="v">60–80 ml</div></div>
+            <div class="stat"><div class="k">Dose</div><div class="v">1.5–2 g</div></div>
+            <div class="stat"><div class="k">Whisk</div><div class="v">15–20 s</div></div>
+            <div class="stat"><div class="k">Tools</div><div class="v">chawan+chasen</div></div>
+          </div>
+          <div class="vessel">Sift first, always</div>
+          <div class="note"><b>Usucha</b> = light &amp; frothy. <b>Koicha</b> = 3–4 g, less water, a thick paste, no foam.</div>
+        </div>
+        <div class="tea whisk glass reveal">
+          <div class="top"><span class="chip" style="background:#a9713d"></span><div><div class="name">Hojicha Powder</div><div class="zh">焙茶粉 · roasted</div></div></div>
+          <div class="temp"><span class="dot" style="background:#c08a4e"></span>80–90°C<small>forgiving heat</small></div>
+          <div class="statgrid">
+            <div class="stat"><div class="k">Water</div><div class="v">60–80 ml</div></div>
+            <div class="stat"><div class="k">Dose</div><div class="v">2–3 g</div></div>
+            <div class="stat"><div class="k">Whisk</div><div class="v">10–15 s</div></div>
+            <div class="stat"><div class="k">Tools</div><div class="v">chawan+chasen</div></div>
+          </div>
+          <div class="vessel">The easy whisked tea</div>
+          <div class="note">Roasted = nutty, low caffeine, little bitterness. Tolerates hotter water than matcha.</div>
+        </div>
+      </div>
+      <div class="whisknote glass reveal"><span class="e">🥣</span><span><b>Whisked means the whole powder is in your bowl</b> — there's no leaf left to re-steep, and no "cups" the way steeped tea has. One preparation, one bowl, sipped in a few pulls.</span></div>
+    </section>
+
+    <!-- 5 · STEEPING RITUAL -->
+    <section id="rituals">
+      <div class="sec jade reveal"><span class="no">5</span><h2>The Steeping Ritual</h2><span class="tag">gongfu, six beats</span></div>
+      <div class="grid rituals s6">
+        <div class="step glass reveal"><div class="n">1</div><h4>Warm Up <span class="zh">温杯</span></h4><p>Flash boiling water through gaiwan, fair cup and cups. Discard. A warm vessel holds heat.</p></div>
+        <div class="step glass reveal"><div class="n">2</div><h4>Measure &amp; Load <span class="zh">投茶</span></h4><p>Weigh the leaf, drop it in. Swirl to wake the dry aroma before the water hits.</p></div>
+        <div class="step glass reveal"><div class="n">3</div><h4>Rinse <span class="zh">洗茶</span></h4><p>Brief splash, pour off fast. Opens the leaf, clears dust. Skip for delicate fresh greens.</p></div>
+        <div class="step glass reveal"><div class="n">4</div><h4>First Steep <span class="zh">出汤</span></h4><p>Pour water, hold the target seconds, then empty completely into the fair cup.</p></div>
+        <div class="step glass reveal"><div class="n">5</div><h4>Divide &amp; Sip <span class="zh">分茶</span></h4><p>Evenly split the fair-cup liquor between cups. Taste, smell, judge strength.</p></div>
+        <div class="step glass reveal"><div class="n">6</div><h4>Lengthen &amp; Repeat <span class="zh">续水</span></h4><p>Add a few seconds next time. The leaf reveals new layers as it unfurls.</p></div>
+      </div>
+
+      <div class="sec plum reveal" style="margin-top:28px"><span class="no">6</span><h2>The Whisking Ritual</h2><span class="tag">powders, three beats</span></div>
+      <div class="grid rituals s3">
+        <div class="step whisk glass reveal"><div class="n">1</div><h4>Sift <span class="zh">过筛</span></h4><p>Sift 1.5–3 g of powder into a warm chawan. Sifting breaks clumps so it whisks smooth, not gritty.</p></div>
+        <div class="step whisk glass reveal"><div class="n">2</div><h4>Pour <span class="zh">注水</span></h4><p>Add 60–80 ml at the right heat — matcha 70–80°C, hojicha 80–90°C. Too hot and matcha turns bitter.</p></div>
+        <div class="step whisk glass reveal"><div class="n">3</div><h4>Whisk &amp; Sip <span class="zh">点茶</span></h4><p>Whisk the chasen briskly in a W or M motion 15–20 s until a fine froth. Drink in a few fresh pulls.</p></div>
+      </div>
+    </section>
+
+    <!-- 7 · KIT -->
+    <section id="kit">
+      <div class="sec reveal"><span class="no">7</span><h2>The Kit</h2><span class="tag">both methods, one shelf</span></div>
+      <div class="kit-group">
+        <div class="kit-l">Steeping</div>
+        <div class="kit">
+          <div class="eq glass jade"><span class="ico">🥣</span>Gaiwan<small>lidded bowl</small></div>
+          <div class="eq glass jade"><span class="ico">🫙</span>Yixing<small>clay, one per tea</small></div>
+          <div class="eq glass jade"><span class="ico">⚖️</span>Fair Cup<small>公道杯 · even</small></div>
+          <div class="eq glass jade"><span class="ico">🏺</span>Pitcher<small>catches the pour</small></div>
+          <div class="eq glass jade"><span class="ico">🍵</span>Cups<small>3–5 small</small></div>
+          <div class="eq glass jade"><span class="ico">♨️</span>Kettle<small>temp control</small></div>
+          <div class="eq glass jade"><span class="ico">🧺</span>Tea Tray<small>茶盘</small></div>
+          <div class="eq glass jade"><span class="ico">⚖️</span>Scale<small>1 g accuracy</small></div>
+        </div>
+      </div>
+      <div class="kit-group">
+        <div class="kit-l">Whisking</div>
+        <div class="kit w2">
+          <div class="eq glass plum"><span class="ico">🥣</span>Chawan<small>wide tea bowl</small></div>
+          <div class="eq glass plum"><span class="ico">🥢</span>Chasen<small>bamboo whisk</small></div>
+          <div class="eq glass plum"><span class="ico">🪜</span>Sifter<small>breaks clumps</small></div>
+          <div class="eq glass plum"><span class="ico">🥄</span>Chashaku<small>tea scoop</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section>
+      <div class="grid tips">
+        <div class="tip glass reveal"><b>Steeping — temperature is the lever.</b> Delicate young teas want cooler water; roasted oolong &amp; pu-erh want a full boil. Get heat right before touching time.</div>
+        <div class="tip glass reveal"><b>Steeping — match vessel to tea.</b> A Yixing pot is dedicated to one tea (it drinks in flavor). A neutral gaiwan works for everything and shows true color.</div>
+        <div class="tip whisk glass reveal"><b>Whisking — water temp is the whole game.</b> Too hot and matcha turns bitter; hojicha forgives you. Sift first, every time, and whisk to a fine froth.</div>
+        <div class="tip whisk glass reveal"><b>Know your caffeine.</b> Matcha is the strongest cup per spoonful — and it's fully dissolved, so you drink all of it. Hojicha is the gentle, roasty, low-caffeine alternative.</div>
+      </div>
+    </section>
+
+    <footer class="glass reveal">
+      <span class="mark">功夫 · Steep the leaves, whisk the powders — tune to your tea.</span>
+      <span>Doses &amp; times are starting points · steeped for a 110 ml gaiwan, whisked per bowl · adjust ±20% freely.</span>
+    </footer>
+
   </div>
 
-  <!-- 2 · PARAMETER TABLE -->
-  <div class="sec"><span class="no">2</span><h2>Brewing by Tea Type</h2><span class="tag">doses for a 110 ml gaiwan</span></div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Tea</th>
-          <th>Water Temp</th>
-          <th class="c">Dose</th>
-          <th class="c">1st Steep</th>
-          <th class="c">Then</th>
-          <th class="c">Cups</th>
-          <th>Vessel</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Green -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#8fbf5f"></span><span>Green<span class="zh">绿茶 · unroasted</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#9fd06b"></span>75–85°C</span><div class="note">gentle, avoid scorching</div></td>
-          <td class="c col-dose">5–6 g</td>
-          <td class="c col-time">10–15 s</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">4–6</td>
-          <td class="note">Gaiwan, open lid</td>
-        </tr>
-        <!-- White -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#d9c48a"></span><span>White<span class="zh">白茶 · silver → aged</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#e0c98a"></span>85–95°C</span><div class="note">higher for aged shou mei</div></td>
-          <td class="c col-dose">4–6 g</td>
-          <td class="c col-time">15–20 s</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">6–10</td>
-          <td class="note">Gaiwan or glass</td>
-        </tr>
-        <!-- Yellow -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#e0b541"></span><span>Yellow<span class="zh">黄茶 · mellow</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#e6c357"></span>80–85°C</span><div class="note">like green, softer</div></td>
-          <td class="c col-dose">5 g</td>
-          <td class="c col-time">15–20 s</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">4–6</td>
-          <td class="note">Gaiwan</td>
-        </tr>
-        <!-- Light oolong -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#7fae5a"></span><span>Light Oolong<span class="zh">清香乌龙 · Tie Guan Yin</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#8fbf5f"></span>95–100°C</span><div class="note">floral, needs heat</div></td>
-          <td class="c col-dose">7–8 g</td>
-          <td class="c col-time">5–10 s</td>
-          <td class="c col-time">+3–5 s</td>
-          <td class="c inf">8–12</td>
-          <td class="note">Yixing clay / gaiwan</td>
-        </tr>
-        <!-- Dark oolong -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#b06a34"></span><span>Dark Oolong<span class="zh">浓香 / 炭焙 · Dan Cong, Phoenix</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#c9772f"></span>95–100°C</span><div class="note">roasted, bold</div></td>
-          <td class="c col-dose">7–8 g</td>
-          <td class="c col-time">5–10 s</td>
-          <td class="c col-time">+3–5 s</td>
-          <td class="c inf">10–15</td>
-          <td class="note">Yixing clay teapot</td>
-        </tr>
-        <!-- Ripe pu-erh -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#6f4326"></span><span>Ripe Pu-erh<span class="zh">熟普 · earthy, smooth</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#8a4f2a"></span>100°C</span><div class="note">full boil</div></td>
-          <td class="c col-dose">7 g</td>
-          <td class="c col-time">5 s (rinse)</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">10–20</td>
-          <td class="note">Yixing, rinse 1–2×</td>
-        </tr>
-        <!-- Raw pu-erh -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#9c6b3b"></span><span>Raw Pu-erh<span class="zh">生普 · aged, sharp</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#b9752c"></span>100°C</span><div class="note">full boil</div></td>
-          <td class="c col-dose">7 g</td>
-          <td class="c col-time">5–10 s</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">10–20</td>
-          <td class="note">Yixing, rinse once</td>
-        </tr>
-        <!-- Black -->
-        <tr>
-          <td><div class="tea"><span class="chip" style="background:#a23a2e"></span><span>Black / Red<span class="zh">红茶 · Yunnan, Keemun</span></span></div></td>
-          <td><span class="temp"><span class="dot" style="background:#b9503f"></span>90–95°C</span><div class="note">sweet &amp; malty</div></td>
-          <td class="c col-dose">5–6 g</td>
-          <td class="c col-time">15–20 s</td>
-          <td class="c col-time">+5 s</td>
-          <td class="c inf">5–8</td>
-          <td class="note">Gaiwan or small pot</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="legend">
-    <span><b>Then</b> = add a few seconds per cup (young teas ~5 s, oolong 3–5 s).</span>
-    <span><b>Cups</b> = realistic steeps before the leaf runs out.</span>
-    <span><b>Dose</b> scales with vessel — halve leaf for a 60 ml cup.</span>
-  </div>
+<script>
+  // scroll progress
+  const prog = document.getElementById('prog');
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    prog.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  };
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-  <!-- 3 · STEPS -->
-  <div class="sec"><span class="no">3</span><h2>The Ritual, Six Beats</h2><span class="tag">repeat per session</span></div>
-  <div class="steps">
-    <div class="step"><div class="n">1</div><h4>Warm Up <span class="zh">温杯</span></h4><p>Flash boiling water through gaiwan, fair cup and cups. Discard. A warm vessel holds heat.</p></div>
-    <div class="step"><div class="n">2</div><h4>Measure &amp; Load <span class="zh">投茶</span></h4><p>Weigh the leaf, drop it in. Swirl to awaken the dry aroma before the water hits.</p></div>
-    <div class="step"><div class="n">3</div><h4>Rinse <span class="zh">洗茶</span></h4><p>Brief splash, pour off fast. Opens the leaf, clears dust. Skip for delicate fresh greens.</p></div>
-    <div class="step"><div class="n">4</div><h4>First Steep <span class="zh">出汤</span></h4><p>Pour water, hold the target seconds, then empty completely into the fair cup.</p></div>
-    <div class="step"><div class="n">5</div><h4>Divide &amp; Sip <span class="zh">分茶</span></h4><p>Evenly split the fair-cup liquor between cups. Taste, smell, judge strength.</p></div>
-    <div class="step"><div class="n">6</div><h4>Lengthen &amp; Repeat <span class="zh">续水</span></h4><p>Add a few seconds next time. The leaf reveals new layers as it unfurls.</p></div>
-  </div>
-
-  <!-- 4 · EQUIPMENT -->
-  <div class="sec"><span class="no">4</span><h2>The Gongfu Kit</h2><span class="tag">the minimum that works</span></div>
-  <div class="equip">
-    <div class="eq"><span class="ico">🥣</span>Gaiwan<small>lidded bowl</small></div>
-    <div class="eq"><span class="ico">🫙</span>Yixing Teapot<small>clay, single-use per tea</small></div>
-    <div class="eq"><span class="ico">⚖️</span>Fair Cup 公道杯<small>even strength</small></div>
-    <div class="eq"><span class="ico">🏺</span>Pitcher<small>catches the pour</small></div>
-    <div class="eq"><span class="ico">🍵</span>Tasting Cups<small>3–5 small</small></div>
-    <div class="eq"><span class="ico">♨️</span>Temp Kettle<small>set the heat</small></div>
-    <div class="eq"><span class="ico">🧺</span>Tea Tray 茶盘<small>catches spills</small></div>
-    <div class="eq"><span class="ico">⚖️</span>Scale<small>1 g accuracy</small></div>
-  </div>
-
-  <!-- TIPS -->
-  <div class="tips">
-    <div class="tip"><b>Temperature is the lever.</b> Delicate young teas want cooler water; roasted oolong &amp; pu-erh want a full boil. Get heat right before touching time.</div>
-    <div class="tip"><b>Match the vessel to the tea.</b> A clay Yixing pot is dedicated to one tea (it drinks in flavor). A neutral gaiwan works for everything and shows true color.</div>
-    <div class="tip"><b>Empty the vessel fully.</b> Leftover liquor keeps extracting and turns the next cup bitter — always drain to the last drop.</div>
-    <div class="tip"><b>When in doubt, go shorter.</b> A weak cup is fixable by re-steeping; a bitter one is gone. You can always add another steep to the same leaf.</div>
-  </div>
-
-  <footer>
-    <span class="mark">功夫 · Gongfu is a practice, not a recipe — tune to your leaf, your water, your mood.</span>
-    <span>Doses &amp; times are starting points for a 110 ml gaiwan · adjust ±20% freely.</span>
-  </footer>
-
-</div>
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, {threshold:.08, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (Math.min(i,6)*40)+'ms'; io.observe(el); });
+</script>
 </body>
 </html>
